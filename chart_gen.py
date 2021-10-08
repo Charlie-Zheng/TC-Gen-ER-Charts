@@ -41,8 +41,7 @@ def gen(er_min:int, er_step:int, er_max:int, timeout:int):
         er_box.send_keys(Keys.CONTROL, 'A')
         er_box.send_keys(Keys.DELETE)
         er_box.send_keys(er)
-        generate_btn.click()
-
+        generate_btn.send_keys(Keys.ENTER)
         try:
             while waitForElement(CSS, '#content > div > div.mt-2.mb-2.row > div > div > div.card-body > div:nth-child(3) > div > div > div').text != '100%':
                 time.sleep(1)
