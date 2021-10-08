@@ -11,12 +11,13 @@ import sys
 
 driver: WebDriver
 CSS = By.CSS_SELECTOR
-
+x = []
+y = []
 
 def gen(er_min:int, er_step:int, er_max:int, timeout:int):
-    x = []
-    y = []
 
+    global x
+    global y
     global driver
     options = webdriver.ChromeOptions()
     options.add_experimental_option('useAutomationExtension', False)
@@ -44,7 +45,7 @@ def gen(er_min:int, er_step:int, er_max:int, timeout:int):
 
         while waitForElement(CSS, '#content > div > div.mt-2.mb-2.row > div > div > div.card-body > div:nth-child(3) > div > div > div').text != '100%':
             time.sleep(1)
-
+        time.sleep(1)
         # gets all the stats
         stats = waitForElements(CSS, '#content > div > div:nth-child(3) > div > div > div.list-group > div:nth-child(1) > button > div > div > div > div.card-body > div > div > div', timeout = timeout)
 
@@ -67,6 +68,7 @@ def gen(er_min:int, er_step:int, er_max:int, timeout:int):
         er += er_step
     print('x = ' + str(x))
     print('y = ' + str(y))
+    driver.close()
 
 def percent_to_float(percent:str):
     return float(percent.strip('%'))
@@ -100,10 +102,13 @@ parse.add_argument('-er_max', help='The ending ER', default=250, type=int, nargs
 parse.add_argument('-timeout', help='the timeout', default=120, type=int, nargs="?")
 args = parse.parse_args()
 try:
+    print(args.er_min,args.er_step, args.er_max, args.timeout)
     gen(args.er_min,args.er_step, args.er_max, args.timeout)
 except Exception as e:
     try:
         print(e)
+        print('x = ' + str(x))
+        print('y = ' + str(y))
         driver.close()
     except:
         pass
