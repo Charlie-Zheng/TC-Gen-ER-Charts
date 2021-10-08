@@ -4,7 +4,7 @@ Requirements:
 python 3.9
 selenium
 
-To install the require python modules, run ```python -m pip -install requirements.txt```
+To install the require python modules, run ```python -m pip -install -r requirements.txt```
 
 
 If the included chromedriver.exe doesn't work, go to https://chromedriver.chromium.org/downloads and download the version corresponding to your chrome version, extract the .exe and put it in the same folder as this file. 
