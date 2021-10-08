@@ -106,7 +106,8 @@ try:
     gen(args.er_min,args.er_step, args.er_max, args.timeout)
 except Exception as e:
     try:
-        print(e)
+        import traceback
+        traceback.print_exc()
         print('x = ' + str(x))
         print('y = ' + str(y))
         driver.close()
