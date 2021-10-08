@@ -43,8 +43,11 @@ def gen(er_min:int, er_step:int, er_max:int, timeout:int):
         er_box.send_keys(er)
         generate_btn.click()
 
-        while waitForElement(CSS, '#content > div > div.mt-2.mb-2.row > div > div > div.card-body > div:nth-child(3) > div > div > div').text != '100%':
-            time.sleep(1)
+        try:
+            while waitForElement(CSS, '#content > div > div.mt-2.mb-2.row > div > div > div.card-body > div:nth-child(3) > div > div > div').text != '100%':
+                time.sleep(1)
+        except:
+            pass
         time.sleep(1)
         # gets all the stats
         stats = waitForElements(CSS, '#content > div > div:nth-child(3) > div > div > div.list-group > div:nth-child(1) > button > div > div > div > div.card-body > div > div > div', timeout = timeout)
