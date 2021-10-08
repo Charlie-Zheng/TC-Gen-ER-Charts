@@ -13,7 +13,7 @@ driver: WebDriver
 CSS = By.CSS_SELECTOR
 
 
-def gen(er_min:int, er_step:int, er_max:int):
+def gen(er_min:int, er_step:int, er_max:int, timeout:int):
     x = []
     y = []
 
@@ -46,7 +46,7 @@ def gen(er_min:int, er_step:int, er_max:int):
             time.sleep(1)
 
         # gets all the stats
-        stats = waitForElements(CSS, '#content > div > div:nth-child(3) > div > div > div.list-group > div:nth-child(1) > button > div > div > div > div.card-body > div > div > div', timeout = 120)
+        stats = waitForElements(CSS, '#content > div > div:nth-child(3) > div > div > div.list-group > div:nth-child(1) > button > div > div > div > div.card-body > div > div > div', timeout = timeout)
 
         found_er = 0
         for stat in stats:
@@ -94,14 +94,16 @@ def waitForElements(searchMethod, searchTerms, timeout=5, elem=None) -> List[Web
     return found
 
 parse = argparse.ArgumentParser('Go to https://chromedriver.chromium.org/downloads and download the version corresponding to your chrome version, extract the .exe and put it in the same folder as this file. Used to automatically check damage at ER breakpoints. Requires you to already be on the character and have all the settings set up in Genshin Optimizer. The Energy Recharge% minimum final stat filter must be the first filter. Addtionally, due to program limitations, you must close Chrome before running this')
-parse.add_argument('er_min', help='The starting ER', default=100, type=int, nargs="?")
-parse.add_argument('er_step', help='The step between ER', default=5, type=int, nargs="?")
-parse.add_argument('er_max', help='The ending ER', default=250, type=int, nargs="?")
+parse.add_argument('-er_min', help='The starting ER', default=100, type=int, nargs="?")
+parse.add_argument('-er_step', help='The step between ER', default=5, type=int, nargs="?")
+parse.add_argument('-er_max', help='The ending ER', default=250, type=int, nargs="?")
+parse.add_argument('-timeout', help='the timeout', default=120, type=int, nargs="?")
 args = parse.parse_args()
 try:
-    gen(args.er_min,args.er_step, args.er_max)
-except:
+    gen(args.er_min,args.er_step, args.er_max, args.timeout)
+except Exception as e:
     try:
+        print(e)
         driver.close()
     except:
         pass
