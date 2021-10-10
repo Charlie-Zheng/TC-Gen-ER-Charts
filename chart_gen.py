@@ -28,14 +28,34 @@ def gen(er_min:int, er_step:int, er_max:int, timeout:int):
     driver.get('https://frzyc.github.io/genshin-optimizer/#/build')
     time.sleep(2)
     # first button
-    assert waitForElement(
-        CSS, '#input-group-dropdown-1 > span').text == 'Energy Recharge%'
+    driver.execute_script("document.body.style.zoom='100%'")
+    er_box:WebElement
+    stat_filters = waitForElements(CSS, '#content > div > div.mt-2.mb-2.row > div > div > div.card-body > div:nth-child(1) > div:nth-child(1) > div:nth-child(4) > div.card-body > div > div', errMsg='Did not find minimum stat filters')
+    for filter in stat_filters:
+        if 'Energy Recharge%' in filter.text:
+            er_box = waitForElement(CSS, 'input',elem = filter, errMsg='Did not find ER filter input box')
+            break
+        elif 'New Stat' in filter.text:
+            new_stat_btn = waitForElement(CSS, 'button', elem=filter)
+            new_stat_btn.send_keys(Keys.ENTER)
+            dropdown_elems = waitForElements(CSS, '#content > div > div.mt-2.mb-2.row > div > div > div.card-body > div:nth-child(1) > div:nth-child(1) > div:nth-child(4) > div.card-body > div > div > div > div > div > a')
+            for dropdown in dropdown_elems:
+                if 'Energy Recharge' in dropdown.text:
+                    dropdown.send_keys(Keys.ENTER)
+                    break
+            else:
+                print('Did not find ER in minimum stat filter dropdown')
+                quit()
+            er_box = waitForElement(CSS, '#content > div > div.mt-2.mb-2.row > div > div > div.card-body > div:nth-child(1) > div:nth-child(1) > div:nth-child(4) > div.card-body > div > div:nth-last-child(2) > div > input', errMsg='Did not find ER filter input box')
+        else:
+            del_btn = waitForElement(CSS, 'button.btn.btn-danger', elem=filter)
+            del_btn.send_keys(Keys.ENTER)
+            pass
 
     target = waitForElement(CSS, '#content > div > div.mt-2.mb-2.row > div > div > div.card-body > div.d-flex.justify-content-between.mb-2.row > div:nth-child(2) > div > button > span > b > span').text
     print('Looking for the %s target' % target)
-    er_box = waitForElement(
-        CSS, '#content > div > div.mt-2.mb-2.row > div > div > div.card-body > div:nth-child(1) > div:nth-child(1) > div:nth-child(4) > div.card-body > div > div:nth-child(1) > div > input')
-    generate_btn = waitForElement(CSS, '#content > div > div.mt-2.mb-2.row > div > div > div.card-body > div.d-flex.justify-content-between.mb-2.row > div:nth-child(1) > div > button.h-100.btn.btn-success')
+    
+    generate_btn = waitForElement(CSS, '#content > div > div.mt-2.mb-2.row > div > div > div.card-body > div.d-flex.justify-content-between.mb-2.row > div:nth-child(1) > div > button.h-100.btn.btn-success', errMsg='Could not find generate button')
     er = er_min
     while er <= er_max:
         er_box.send_keys(Keys.CONTROL, 'A')
@@ -49,7 +69,7 @@ def gen(er_min:int, er_step:int, er_max:int, timeout:int):
             pass
         time.sleep(1)
         # gets all the stats
-        stats = waitForElements(CSS, '#content > div > div:nth-child(3) > div > div > div.list-group > div:nth-child(1) > button > div > div > div > div.card-body > div > div > div', timeout = timeout)
+        stats = waitForElements(CSS, '#content > div > div:nth-child(3) > div > div > div.list-group > div:nth-child(1) > button > div > div > div > div.card-body > div > div > div', timeout = timeout, errMsg='Could not find stats')
 
         found_er = 0
         for stat in stats:
@@ -75,27 +95,38 @@ def gen(er_min:int, er_step:int, er_max:int, timeout:int):
 def percent_to_float(percent:str):
     return float(percent.strip('%'))
 
-def waitForElement(searchMethod, searchTerms, timeout=5, elem=None) -> WebElement:
+def waitForElement(searchMethod, searchTerms, timeout=10, elem=None, errMsg:str=None) -> WebElement:
 
-    if len(x := waitForElements(searchMethod, searchTerms, timeout, elem)) > 0:
+    if len(x := waitForElements(searchMethod, searchTerms, timeout, elem, errMsg)) > 0:
         return x[0]
     else:
         return None
 
 
-def waitForElements(searchMethod, searchTerms, timeout=5, elem=None) -> List[WebElement]:
+def waitForElements(searchMethod, searchTerms, timeout=10, elem=None, errMsg:str=None) -> List[WebElement]:
     startTime = time.time()
     if elem == None:
         elem = driver
     found: List[WebElement]
-    while (len(found := driver.find_elements(searchMethod, searchTerms)) == 0 or not found[0].is_displayed()) and time.time() - startTime < timeout:
+    while (len(found := elem.find_elements(searchMethod, searchTerms)) == 0 or not found[0].is_displayed()) and time.time() - startTime < timeout:
         time.sleep(0.1)
 
     if time.time() - startTime >= timeout:
-        print("Error, didn't find " + searchTerms + " using " + searchMethod)
-        driver.close()
-        sys.exit()
+        if errMsg == None:
+            print("Error, didn't find " + searchTerms + " using " + searchMethod)
+        else:
+            print(errMsg)
+        quit()
     return found
+
+def quit():
+    print('x = ' + str(x))
+    print('y = ' + str(y))
+    try:
+        driver.close()
+    except:
+        pass
+    sys.exit()
 
 parse = argparse.ArgumentParser('Go to https://chromedriver.chromium.org/downloads and download the version corresponding to your chrome version, extract the .exe and put it in the same folder as this file. Used to automatically check damage at ER breakpoints. Requires you to already be on the character and have all the settings set up in Genshin Optimizer. The Energy Recharge% minimum final stat filter must be the first filter. Addtionally, due to program limitations, you must close Chrome before running this')
 parse.add_argument('-er_min', help='The starting ER', default=100, type=int, nargs="?")
