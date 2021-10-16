@@ -1,6 +1,6 @@
 Used to automatically check damage at ER breakpoints. Requires you to already be on the character and have all the settings set up in Genshin Optimizer. The Energy Recharge% minimum final stat filter must be the first filter. Addtionally, due to program limitations, you must close Chrome before running this.
 
-Requirements:
+# Requirements/Set up:
 python 3.9
 selenium
 
@@ -22,3 +22,13 @@ If the included chromedriver.exe doesn't work, go to https://chromedriver.chromi
 ## Example:
 
 `python .\chart_gen.py` is equivalent to `python .\chart_gen.py -er_min 100 -er_step 5 -er_max 250 -timeout 120`
+
+# Tips and Tricks for faster builds:
+
+* Generate 1 build only (option is next to the generate button)
+
+* Choose only the relevant Goblets (The corresponding EleDMG%, maybe atk% goblets if you have good ones)
+
+* Choose only CR/CDMG Circlets, ATK/ER/EM Sands
+
+* Do all sets for lower ER (use the CLI to limit the scraping to 100 ER -> 150 ER, for example), then force a specific 2 set/4 set for the rest of the higher ER (use CLI to do 150 ER -> 250 ER)
