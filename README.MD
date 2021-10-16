@@ -1,11 +1,12 @@
 Used to automatically check damage at ER breakpoints. Requires you to already be on the character and have all the settings set up in Genshin Optimizer. The Energy Recharge% minimum final stat filter must be the first filter. Addtionally, due to program limitations, you must close Chrome before running this.
 
 # Requirements/Set up:
-python 3.9
-selenium
+* python 3.9
+* selenium
 
 To install the require python modules, run ```python -m pip install -r requirements.txt```
 
+Tested only on python 3.9. The code might run on python 3.7 or 3.8, but the developer doesn't know, and does not currently guarantee compatibility.
 
 If the included chromedriver.exe doesn't work, go to https://chromedriver.chromium.org/downloads and download the version corresponding to your chrome version, extract the .exe and put it in the same folder as this file. 
 
@@ -36,3 +37,5 @@ If the included chromedriver.exe doesn't work, go to https://chromedriver.chromi
 * For 4BS using characters, just force 4BS. That set is too broken.
 
 * For characters that use both 4BS and 4EoSF, just run no set assumption until GO gives us an OR option for artifact sets
+
+* Reminder that character level 90 and enemy level 90 are the assumed levels
