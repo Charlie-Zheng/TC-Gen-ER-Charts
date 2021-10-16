@@ -55,7 +55,7 @@ def gen(er_min:int, er_step:int, er_max:int, timeout:int):
     target = waitForElement(CSS, '#content > div > div.mt-2.mb-2.row > div > div > div.card-body > div.d-flex.justify-content-between.mb-2.row > div:nth-child(2) > div > button > span > b > span').text
     print('Looking for the %s target' % target)
     
-    generate_btn = waitForElement(CSS, '#content > div > div.mt-2.mb-2.row > div > div > div.card-body > div.d-flex.justify-content-between.mb-2.row > div:nth-child(1) > div > button.h-100.btn.btn-success', errMsg='Could not find generate button')
+    generate_btn = waitForElement(CSS, '#content > div > div.mt-2.mb-2.row > div > div > div.card-body > div.d-flex.justify-content-between.mb-2.row > div:nth-child(1) > div > button.h-100.btn', errMsg='Could not find generate button')
     er = er_min
     while er <= er_max:
         er_box.send_keys(Keys.CONTROL, 'A')

@@ -8,3 +8,17 @@ To install the require python modules, run ```python -m pip install -r requireme
 
 
 If the included chromedriver.exe doesn't work, go to https://chromedriver.chromium.org/downloads and download the version corresponding to your chrome version, extract the .exe and put it in the same folder as this file. 
+
+# Command Line arguments
+
+`-er_min` specifies the starting ER. Default: 100
+
+`-er_step` specifies the steps between ER. Default: 5
+
+`-er_max` specifies the maximum ER. Default: 250
+
+`-timeout` changes the timeout. Default: 120
+
+## Example:
+
+`python .\chart_gen.py` is equivalent to `python .\chart_gen.py -er_min 100 -er_step 5 -er_max 250 -timeout 120`
