@@ -128,7 +128,7 @@ def quit():
         pass
     sys.exit()
 
-parse = argparse.ArgumentParser('Go to https://chromedriver.chromium.org/downloads and download the version corresponding to your chrome version, extract the .exe and put it in the same folder as this file. Used to automatically check damage at ER breakpoints. Requires you to already be on the character and have all the settings set up in Genshin Optimizer. The Energy Recharge% minimum final stat filter must be the first filter. Addtionally, due to program limitations, you must close Chrome before running this')
+parse = argparse.ArgumentParser('GO scraper', 'Go to https://chromedriver.chromium.org/downloads and download the version corresponding to your chrome version, extract the .exe and put it in the same folder as this file. Used to automatically check damage at ER breakpoints. Requires you to already be on the character and have all the settings set up in Genshin Optimizer. The Energy Recharge% minimum final stat filter must be the first filter. Addtionally, due to program limitations, you must close Chrome before running this')
 parse.add_argument('-er_min', help='The starting ER', default=100, type=int, nargs="?")
 parse.add_argument('-er_step', help='The step between ER', default=5, type=int, nargs="?")
 parse.add_argument('-er_max', help='The ending ER', default=250, type=int, nargs="?")

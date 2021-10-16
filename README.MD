@@ -23,7 +23,7 @@ If the included chromedriver.exe doesn't work, go to https://chromedriver.chromi
 
 `python .\chart_gen.py` is equivalent to `python .\chart_gen.py -er_min 100 -er_step 5 -er_max 250 -timeout 120`
 
-# Tips and Tricks for faster builds:
+# Recommended Build Settings:
 
 * Generate 1 build only (option is next to the generate button)
 
@@ -31,4 +31,8 @@ If the included chromedriver.exe doesn't work, go to https://chromedriver.chromi
 
 * Choose only CR/CDMG Circlets, ATK/ER/EM Sands
 
-* Do all sets for lower ER (use the CLI to limit the scraping to 100 ER -> 150 ER, for example), then force a specific 2 set/4 set for the rest of the higher ER (use CLI to do 150 ER -> 250 ER)
+* For EoSF using characters, do all sets for lower ER (use the CLI to limit the scraping to 100 ER -> 150 ER, for example), then force EoSF 2 set/4 set for the higher ER (use CLI to do the remaining 150 ER -> 250 ER)
+
+* For 4BS using characters, just force 4BS. That set is too broken.
+
+* For characters that use both 4BS and 4EoSF, just run no set assumption until GO gives us an OR option for artifact sets
