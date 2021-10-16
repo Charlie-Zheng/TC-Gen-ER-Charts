@@ -10,6 +10,8 @@ Tested only on python 3.9. The code might run on python 3.7 or 3.8, but the deve
 
 If the included chromedriver.exe doesn't work, go to https://chromedriver.chromium.org/downloads and download the version corresponding to your chrome version, extract the .exe and put it in the same folder as this file. 
 
+[Youtube video for a video guide on the set up process](https://youtu.be/RUVZUyHQgcc)
+
 # Command Line arguments
 
 `-er_min` specifies the starting ER. Default: 100
