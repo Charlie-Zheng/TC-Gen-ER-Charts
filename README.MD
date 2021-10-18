@@ -20,11 +20,11 @@ If the included chromedriver.exe doesn't work, go to https://chromedriver.chromi
 
 `-er_max` specifies the maximum ER. Default: 250
 
-`-timeout` changes the timeout. Default: 120
+`-timeout` changes the timeout. Default: 20
 
 ## Example:
 
-`python .\chart_gen.py` is equivalent to `python .\chart_gen.py -er_min 100 -er_step 5 -er_max 250 -timeout 120`
+`python .\chart_gen.py` is equivalent to `python .\chart_gen.py -er_min 100 -er_step 5 -er_max 250 -timeout 20`
 
 # Recommended Build Settings:
 

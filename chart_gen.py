@@ -30,7 +30,7 @@ def gen(er_min:int, er_step:int, er_max:int, timeout:int):
     # first button
     driver.execute_script("document.body.style.zoom='100%'")
     er_box:WebElement
-    stat_filters = waitForElements(CSS, '#content > div > div.mt-2.mb-2.row > div > div > div.card-body > div:nth-child(1) > div:nth-child(1) > div:nth-child(4) > div.card-body > div > div', errMsg='Did not find minimum stat filters')
+    stat_filters = waitForElements(CSS, '#root > div.MuiGrid-root.MuiGrid-container.MuiGrid-spacing-xs-undefined.MuiGrid-direction-xs-column > div.MuiContainer-root.MuiContainer-maxWidthXl > div > div:nth-child(2) > div.MuiCardContent-root > div.MuiGrid-root.MuiGrid-container.MuiGrid-spacing-xs-1 > div.MuiGrid-root.MuiGrid-item.MuiGrid-grid-xs-12.MuiGrid-grid-md-6.MuiGrid-grid-lg-5 > div:nth-child(5) > div.MuiCardContent-root > div > div > div', errMsg='Did not find minimum stat filters')
     for filter in stat_filters:
         if 'Energy Recharge%' in filter.text:
             er_box = waitForElement(CSS, 'input',elem = filter, errMsg='Did not find ER filter input box')
@@ -38,7 +38,7 @@ def gen(er_min:int, er_step:int, er_max:int, timeout:int):
         elif 'New Stat' in filter.text:
             new_stat_btn = waitForElement(CSS, 'button', elem=filter)
             new_stat_btn.send_keys(Keys.ENTER)
-            dropdown_elems = waitForElements(CSS, '#content > div > div.mt-2.mb-2.row > div > div > div.card-body > div:nth-child(1) > div:nth-child(1) > div:nth-child(4) > div.card-body > div > div > div > div > div > a')
+            dropdown_elems = waitForElements(CSS, '#basic-menu > div.MuiPaper-root.MuiPaper-elevation.MuiPaper-rounded.MuiPaper-elevation0.MuiMenu-paper.MuiPaper-root.MuiPaper-elevation.MuiPaper-rounded.MuiPaper-elevation8.MuiPopover-paper > ul > li')
             for dropdown in dropdown_elems:
                 if 'Energy Recharge' in dropdown.text:
                     dropdown.send_keys(Keys.ENTER)
@@ -46,30 +46,30 @@ def gen(er_min:int, er_step:int, er_max:int, timeout:int):
             else:
                 print('Did not find ER in minimum stat filter dropdown')
                 quit()
-            er_box = waitForElement(CSS, '#content > div > div.mt-2.mb-2.row > div > div > div.card-body > div:nth-child(1) > div:nth-child(1) > div:nth-child(4) > div.card-body > div > div:nth-last-child(2) > div > input', errMsg='Did not find ER filter input box')
+            er_box = waitForElement(CSS, '#root > div.MuiGrid-root.MuiGrid-container.MuiGrid-spacing-xs-undefined.MuiGrid-direction-xs-column > div.MuiContainer-root.MuiContainer-maxWidthXl > div > div:nth-child(2) > div.MuiCardContent-root > div.MuiGrid-root.MuiGrid-container.MuiGrid-spacing-xs-1 > div.MuiGrid-root.MuiGrid-item.MuiGrid-grid-xs-12.MuiGrid-grid-md-6.MuiGrid-grid-lg-5 > div:nth-child(5) > div.MuiCardContent-root > div > div:nth-last-child(2) > div > button > div > input', errMsg='Did not find ER filter input box')
         else:
-            del_btn = waitForElement(CSS, 'button.btn.btn-danger', elem=filter)
-            del_btn.send_keys(Keys.ENTER)
             pass
 
-    target = waitForElement(CSS, '#content > div > div.mt-2.mb-2.row > div > div > div.card-body > div.d-flex.justify-content-between.mb-2.row > div:nth-child(2) > div > button > span > b > span').text
+    target = waitForElement(CSS, '#root > div.MuiGrid-root.MuiGrid-container.MuiGrid-spacing-xs-undefined.MuiGrid-direction-xs-column > div.MuiContainer-root.MuiContainer-maxWidthXl > div > div:nth-child(2) > div.MuiCardContent-root > div.MuiGrid-root.MuiGrid-container.MuiGrid-spacing-xs-1 > div.MuiGrid-root.MuiGrid-item > button > span:nth-child(1) > b > span').text
     print('Looking for the %s target' % target)
     
-    generate_btn = waitForElement(CSS, '#content > div > div.mt-2.mb-2.row > div > div > div.card-body > div.d-flex.justify-content-between.mb-2.row > div:nth-child(1) > div > button.h-100.btn', errMsg='Could not find generate button')
+    generate_btn = waitForElement(CSS, '#root > div.MuiGrid-root.MuiGrid-container.MuiGrid-spacing-xs-undefined.MuiGrid-direction-xs-column > div.MuiContainer-root.MuiContainer-maxWidthXl > div > div:nth-child(2) > div.MuiCardContent-root > div.MuiGrid-root.MuiGrid-container.MuiGrid-spacing-xs-1 > div.MuiGrid-root.MuiGrid-item > div > button.MuiButton-root.MuiButton-contained', errMsg='Could not find generate button')
     er = er_min
     while er <= er_max:
+        er_box.send_keys(Keys.ENTER)
         er_box.send_keys(Keys.CONTROL, 'A')
         er_box.send_keys(Keys.DELETE)
         er_box.send_keys(er)
         generate_btn.send_keys(Keys.ENTER)
         try:
-            while waitForElement(CSS, '#content > div > div.mt-2.mb-2.row > div > div > div.card-body > div:nth-child(3) > div > div > div').text != '100%':
+            while waitForElement(CSS, '#root > div.MuiGrid-root.MuiGrid-container.MuiGrid-spacing-xs-undefined.MuiGrid-direction-xs-column > div.MuiContainer-root.MuiContainer-maxWidthXl > div > div:nth-child(2) > div.MuiCardContent-root > div.MuiBox-root > div > div.MuiAlert-message > div > div.MuiGrid-root.MuiGrid-item > p', timeout = timeout).text != '100.0%':
                 time.sleep(1)
+            print('Builds done generating!')
         except:
             pass
         time.sleep(1)
         # gets all the stats
-        stats = waitForElements(CSS, '#content > div > div:nth-child(3) > div > div > div.list-group > div:nth-child(1) > button > div > div > div > div.card-body > div > div > div', timeout = timeout, errMsg='Could not find stats')
+        stats = waitForElements(CSS, '#root > div.MuiGrid-root.MuiGrid-container.MuiGrid-spacing-xs-undefined.MuiGrid-direction-xs-column > div.MuiContainer-root.MuiContainer-maxWidthXl > div > div:nth-child(4) > button > div > div.MuiGrid-root.MuiGrid-container.MuiGrid-spacing-xs-1 > div > div > div > div', timeout = timeout, errMsg='Could not find stats')
 
         found_er = 0
         for stat in stats:
@@ -108,9 +108,9 @@ def waitForElements(searchMethod, searchTerms, timeout=10, elem=None, errMsg:str
     if elem == None:
         elem = driver
     found: List[WebElement]
-    while (len(found := elem.find_elements(searchMethod, searchTerms)) == 0 or not found[0].is_displayed()) and time.time() - startTime < timeout:
+    while (len(found := elem.find_elements(searchMethod, searchTerms)) == 0) and time.time() - startTime < timeout:
         time.sleep(0.1)
-
+    
     if time.time() - startTime >= timeout:
         if errMsg == None:
             print("Error, didn't find " + searchTerms + " using " + searchMethod)
@@ -132,7 +132,7 @@ parse = argparse.ArgumentParser('GO scraper', 'Go to https://chromedriver.chromi
 parse.add_argument('-er_min', help='The starting ER', default=100, type=int, nargs="?")
 parse.add_argument('-er_step', help='The step between ER', default=5, type=int, nargs="?")
 parse.add_argument('-er_max', help='The ending ER', default=250, type=int, nargs="?")
-parse.add_argument('-timeout', help='the timeout', default=120, type=int, nargs="?")
+parse.add_argument('-timeout', help='the timeout', default=20, type=int, nargs="?")
 args = parse.parse_args()
 try:
     print(args.er_min,args.er_step, args.er_max, args.timeout)
