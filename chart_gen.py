@@ -11,6 +11,7 @@ import sys
 
 driver: WebDriver
 CSS = By.CSS_SELECTOR
+XPATH = By.XPATH
 x = []
 y = []
 
@@ -28,9 +29,8 @@ def gen(er_min:int, er_step:int, er_max:int, timeout:int):
     driver.get('https://frzyc.github.io/genshin-optimizer/#/build')
     time.sleep(2)
     # first button
-    driver.execute_script("document.body.style.zoom='100%'")
     er_box:WebElement
-    stat_filters = waitForElements(CSS, '#root > div.MuiGrid-root.MuiGrid-container.MuiGrid-spacing-xs-undefined.MuiGrid-direction-xs-column > div.MuiContainer-root.MuiContainer-maxWidthXl > div > div:nth-child(2) > div.MuiCardContent-root > div.MuiGrid-root.MuiGrid-container.MuiGrid-spacing-xs-1 > div.MuiGrid-root.MuiGrid-item.MuiGrid-grid-xs-12.MuiGrid-grid-md-6.MuiGrid-grid-lg-5 > div:nth-child(5) > div.MuiCardContent-root > div > div > div', errMsg='Did not find minimum stat filters')
+    stat_filters = waitForElements(XPATH, '//*[@id="root"]/div[1]/div[2]/div/div[2]/div[2]/div[1]/div[1]/div[5]', errMsg='Did not find minimum stat filters')
     for filter in stat_filters:
         if 'Energy Recharge%' in filter.text:
             er_box = waitForElement(CSS, 'input',elem = filter, errMsg='Did not find ER filter input box')
@@ -38,7 +38,7 @@ def gen(er_min:int, er_step:int, er_max:int, timeout:int):
         elif 'New Stat' in filter.text:
             new_stat_btn = waitForElement(CSS, 'button', elem=filter)
             new_stat_btn.send_keys(Keys.ENTER)
-            dropdown_elems = waitForElements(CSS, '#basic-menu > div.MuiPaper-root.MuiPaper-elevation.MuiPaper-rounded.MuiPaper-elevation0.MuiMenu-paper.MuiPaper-root.MuiPaper-elevation.MuiPaper-rounded.MuiPaper-elevation8.MuiPopover-paper > ul > li')
+            dropdown_elems = waitForElements(XPATH, '//*[@id="basic-menu"]/div[3]/ul/li')
             for dropdown in dropdown_elems:
                 if 'Energy Recharge' in dropdown.text:
                     dropdown.send_keys(Keys.ENTER)
@@ -46,14 +46,14 @@ def gen(er_min:int, er_step:int, er_max:int, timeout:int):
             else:
                 print('Did not find ER in minimum stat filter dropdown')
                 quit()
-            er_box = waitForElement(CSS, '#root > div.MuiGrid-root.MuiGrid-container.MuiGrid-spacing-xs-undefined.MuiGrid-direction-xs-column > div.MuiContainer-root.MuiContainer-maxWidthXl > div > div:nth-child(2) > div.MuiCardContent-root > div.MuiGrid-root.MuiGrid-container.MuiGrid-spacing-xs-1 > div.MuiGrid-root.MuiGrid-item.MuiGrid-grid-xs-12.MuiGrid-grid-md-6.MuiGrid-grid-lg-5 > div:nth-child(5) > div.MuiCardContent-root > div > div:nth-last-child(2) > div > button > div > input', errMsg='Did not find ER filter input box')
+            er_box = waitForElement(XPATH, '//*[@id="root"]/div[1]/div[2]/div/div[2]/div[2]/div[1]/div[1]/div[5]/div[2]/div/div[last()-1]/div/button[2]/div/input', errMsg='Did not find ER filter input box')
         else:
             pass
 
-    target = waitForElement(CSS, '#root > div.MuiGrid-root.MuiGrid-container.MuiGrid-spacing-xs-undefined.MuiGrid-direction-xs-column > div.MuiContainer-root.MuiContainer-maxWidthXl > div > div:nth-child(2) > div.MuiCardContent-root > div.MuiGrid-root.MuiGrid-container.MuiGrid-spacing-xs-1 > div.MuiGrid-root.MuiGrid-item > button > span:nth-child(1) > b > span').text
+    target = waitForElement(XPATH, '//*[@id="root"]/div[1]/div[2]/div/div[2]/div[2]/div[2]/div[2]/button/span[1]/b/span').text
     print('Looking for the %s target' % target)
     
-    generate_btn = waitForElement(CSS, '#root > div.MuiGrid-root.MuiGrid-container.MuiGrid-spacing-xs-undefined.MuiGrid-direction-xs-column > div.MuiContainer-root.MuiContainer-maxWidthXl > div > div:nth-child(2) > div.MuiCardContent-root > div.MuiGrid-root.MuiGrid-container.MuiGrid-spacing-xs-1 > div.MuiGrid-root.MuiGrid-item > div > button.MuiButton-root.MuiButton-contained', errMsg='Could not find generate button')
+    generate_btn = waitForElement(XPATH, '//*[@id="root"]/div[1]/div[2]/div/div[2]/div[2]/div[2]/div[1]/div/button[1]', errMsg='Could not find generate button')
     er = er_min
     while er <= er_max:
         er_box.send_keys(Keys.ENTER)
@@ -62,14 +62,14 @@ def gen(er_min:int, er_step:int, er_max:int, timeout:int):
         er_box.send_keys(er)
         generate_btn.send_keys(Keys.ENTER)
         try:
-            while waitForElement(CSS, '#root > div.MuiGrid-root.MuiGrid-container.MuiGrid-spacing-xs-undefined.MuiGrid-direction-xs-column > div.MuiContainer-root.MuiContainer-maxWidthXl > div > div:nth-child(2) > div.MuiCardContent-root > div.MuiBox-root > div > div.MuiAlert-message > div > div.MuiGrid-root.MuiGrid-item > p', timeout = timeout).text != '100.0%':
+            while waitForElement(XPATH, '//*[@id="root"]/div[1]/div[2]/div/div[2]/div[2]/div[3]/div/div[2]/div/div[1]/p', timeout = timeout).text != '100.0%':
                 time.sleep(1)
             print('Builds done generating!')
         except:
             pass
         time.sleep(1)
         # gets all the stats
-        stats = waitForElements(CSS, '#root > div.MuiGrid-root.MuiGrid-container.MuiGrid-spacing-xs-undefined.MuiGrid-direction-xs-column > div.MuiContainer-root.MuiContainer-maxWidthXl > div > div:nth-child(4) > button > div > div.MuiGrid-root.MuiGrid-container.MuiGrid-spacing-xs-1 > div > div > div > div', timeout = timeout, errMsg='Could not find stats')
+        stats = waitForElements(XPATH, '//*[@id="root"]/div[1]/div[2]/div/div[4]/button/div/div[2]/div/div/div/div', timeout = timeout, errMsg='Could not find stats')
 
         found_er = 0
         for stat in stats:
